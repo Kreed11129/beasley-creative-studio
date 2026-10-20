@@ -14,7 +14,6 @@ import lunoraInHand from "@/assets/lunora-in-hand.webp.asset.json";
 import seaatCards from "@/assets/seaat-cards.webp.asset.json";
 import levelupBars from "@/assets/levelup-bars.webp.asset.json";
 import blackVisionaries from "@/assets/black-visionaries.webp.asset.json";
-import ecsuFlyer from "@/assets/ecsu-flyer.webp.asset.json";
 import tykiraHeadshot from "@/assets/tykira-headshot.webp.asset.json";
 import shanynPortrait from "@/assets/shanyn-testimonial.webp.asset.json";
 import annemariePortrait from "@/assets/annemarie-testimonial.webp.asset.json";
@@ -196,7 +195,7 @@ function Portfolio() {
     revealNodes.forEach((node) => observer.observe(node));
 
     let frame = 0;
-    const updateMotion = (event?: MouseEvent) => {
+    const updateMotion = () => {
       if (frame) cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
         const scrollable = document.documentElement.scrollHeight - window.innerHeight;
@@ -206,13 +205,14 @@ function Portfolio() {
         if (!reducedMotion && heroImageRef.current) {
           heroImageRef.current.style.setProperty("--hero-parallax", `${Math.min(window.scrollY * 0.1, 75)}px`);
         }
-        if (event && pointerRef.current && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-          pointerRef.current.style.setProperty("--pointer-x", `${event.clientX - 18}px`);
-          pointerRef.current.style.setProperty("--pointer-y", `${event.clientY - 18}px`);
-        }
       });
     };
-    const onPointerMove = (event: MouseEvent) => updateMotion(event);
+    const onPointerMove = (event: MouseEvent) => {
+      if (pointerRef.current && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+        pointerRef.current.style.setProperty("--pointer-x", `${event.clientX - 18}px`);
+        pointerRef.current.style.setProperty("--pointer-y", `${event.clientY - 18}px`);
+      }
+    };
     window.addEventListener("scroll", updateMotion, { passive: true });
     window.addEventListener("resize", updateMotion, { passive: true });
     window.addEventListener("mousemove", onPointerMove, { passive: true });
